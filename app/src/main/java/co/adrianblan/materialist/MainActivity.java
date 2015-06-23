@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -39,7 +40,7 @@ import java.lang.reflect.Type;
 /**
  * Created by Adrian on 2014-11-09.
  */
-public class MainActivity extends ActionBarActivity{
+public class MainActivity extends AppCompatActivity {
 
     public static final String SHARED_PREFS_FILE = "MaterialistPreferences";
 

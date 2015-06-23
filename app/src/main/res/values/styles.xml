@@ -9,12 +9,13 @@
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="undoBarStyle">@style/UndoBar</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <!-- Style for the snack bar -->
     <style name="UndoBar" parent="@style/UndoBarMaterialStyle">
-        <item name="buttonStyle">@style/UndoBarButton</item>
-        <item name="messageStyle">@style/UndoBarMessage</item>
+<!--        <item name="buttonStyle">@style/UndoBarButton</item>
+        <item name="messageStyle">@style/UndoBarMessage</item>-->
     </style>
 
     <style name="UndoBarMessage" parent="@style/UndoBarMessageMaterial">
