@@ -14,8 +14,8 @@
 
     <!-- Style for the snack bar -->
     <style name="UndoBar" parent="@style/UndoBarMaterialStyle">
-<!--        <item name="buttonStyle">@style/UndoBarButton</item>
-        <item name="messageStyle">@style/UndoBarMessage</item>-->
+        <item name="ub_buttonStyle">@style/UndoBarButton</item>
+        <item name="ub_messageStyle">@style/UndoBarMessage</item>
     </style>
 
     <style name="UndoBarMessage" parent="@style/UndoBarMessageMaterial">
