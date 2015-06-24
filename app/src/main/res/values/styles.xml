@@ -8,24 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
-        <item name="undoBarStyle">@style/UndoBar</item>
         <item name="windowNoTitle">true</item>
-    </style>
-
-    <!-- Style for the snack bar -->
-    <style name="UndoBar" parent="@style/UndoBarMaterialStyle">
-        <item name="ub_buttonStyle">@style/UndoBarButton</item>
-        <item name="ub_messageStyle">@style/UndoBarMessage</item>
-    </style>
-
-    <style name="UndoBarMessage" parent="@style/UndoBarMessageMaterial">
-        <item name="android:textSize">15sp</item>
-    </style>
-
-    <style name="UndoBarButton" parent="@style/UndoBarButtonMaterial">
-        <item name="android:textSize">15sp</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
 </resources>

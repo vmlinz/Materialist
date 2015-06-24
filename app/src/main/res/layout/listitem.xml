@@ -20,12 +20,12 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="58dp"
         android:layout_height="62dp"
-        app:rippleOverlay="false"
-        app:rippleColor="#585858"
-        app:rippleAlpha="0.2"
-        app:rippleDuration="200"
-        app:rippleHover="true"
-        app:rippleDelayClick="false">
+        app:mrl_rippleOverlay="false"
+        app:mrl_rippleColor="#585858"
+        app:mrl_rippleAlpha="0.2"
+        app:mrl_rippleDuration="200"
+        app:mrl_rippleHover="true"
+        app:mrl_rippleDelayClick="false">
 
         <ToggleButton
             android:id="@+id/listbutton"
@@ -55,12 +55,12 @@
         android:layout_height="62dp"
         android:layout_toRightOf="@id/listbuttonripple"
 
-        app:rippleOverlay="false"
-        app:rippleColor="#585858"
-        app:rippleAlpha="0.2"
-        app:rippleDuration="200"
-        app:rippleHover="true"
-        app:rippleDelayClick="false">
+        app:mrl_rippleOverlay="false"
+        app:mrl_rippleColor="#585858"
+        app:mrl_rippleAlpha="0.2"
+        app:mrl_rippleDuration="200"
+        app:mrl_rippleHover="true"
+        app:mrl_rippleDelayClick="false">
 
         <TextView
             android:id="@+id/listtext"

@@ -7,8 +7,8 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
-import android.support.v7.app.ActionBarActivity;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -29,10 +29,8 @@ import android.widget.ToggleButton;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.cocosw.undobar.UndoBarController;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.melnykov.fab.FloatingActionButton;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.lang.reflect.Type;
@@ -74,11 +72,12 @@ public class MainActivity extends AppCompatActivity {
         String serializedDataFromPreference = preferencesReader.getString("TaskArrayList", null);
 
         //Deserializes any taskarraylist we have saved
-        Type taskArrayListType = new TypeToken<TaskArrayList>() {}.getType();
+        Type taskArrayListType = new TypeToken<TaskArrayList>() {
+        }.getType();
         TaskArrayList temp = gson.fromJson(serializedDataFromPreference, taskArrayListType);
 
         //If we successfully loaded a TaskArrayList from SharedPreferences, take it
-        if(temp != null){
+        if (temp != null) {
             tasks = temp;
         }
 
@@ -105,12 +104,12 @@ public class MainActivity extends AppCompatActivity {
         //For removing completed tasks
         fab_remove = (FloatingActionButton) findViewById(R.id.fab_remove);
 
-        //Hax to make the two fabs scroll together
+/*        //Hax to make the two fabs scroll together
         fab_add.attachToListView(lv, new FloatingActionButton.FabOnScrollListener() {
             @Override
             public void onScrollDown() {
                 super.onScrollDown();
-                if(tasks.hasCompletedTasks()) {
+                if (tasks.hasCompletedTasks()) {
                     fab_remove.show();
                 }
             }
@@ -120,13 +119,13 @@ public class MainActivity extends AppCompatActivity {
                 super.onScrollUp();
                 fab_remove.hide();
             }
-        });
+        });*/
 
         //Shows the remove fab if we have tasks to remove
-        if(tasks.hasCompletedTasks()) {
-            fab_remove.show(false);
+        if (tasks.hasCompletedTasks()) {
+            fab_remove.setVisibility(View.VISIBLE);
         } else {
-            fab_remove.hide(false);
+            fab_remove.setVisibility(View.INVISIBLE);
         }
 
         // Only set the tint if the device is running KitKat or above
@@ -155,22 +154,27 @@ public class MainActivity extends AppCompatActivity {
         fade_in.setAnimationListener(new Animation.AnimationListener() {
 
             @Override
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+            }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationRepeat(Animation animation) {
+            }
 
             @Override
-            public void onAnimationEnd(Animation animation) {}
+            public void onAnimationEnd(Animation animation) {
+            }
         });
 
         fade_out.setAnimationListener(new Animation.AnimationListener() {
 
             @Override
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+            }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationRepeat(Animation animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -179,17 +183,17 @@ public class MainActivity extends AppCompatActivity {
 
                 //Shows the second fab depending if we have tasks to remove
                 //WARNING .isVisible() is a hacked method, must re-add if updated
-                if(tasks.hasCompletedTasks() && fab_add.isVisible()){
-                    fab_remove.show();
+                if (tasks.hasCompletedTasks() && fab_add.isEnabled()) {
+                    fab_remove.setVisibility(View.VISIBLE);
                 } else {
-                    fab_remove.hide();
+                    fab_remove.setVisibility(View.INVISIBLE);
                 }
 
                 adapter.notifyDataSetChanged();
 
                 //Sorts the task, then plays the animation for the new one
                 View v = findViewByIndex(tasks.indexOf(ti), (ListView) findViewById(R.id.listview));
-                if(v != null){
+                if (v != null) {
                     v.startAnimation(fade_in);
                 }
             }
@@ -197,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Check != null
         View current = findViewByIndex(tasks.indexOf(ti), (ListView) findViewById(R.id.listview));
-        if(current != null) {
+        if (current != null) {
             current.startAnimation(fade_out);
         } else {
             System.out.println("NULL, DO STUFF!");
@@ -205,21 +209,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*This will handle the first time call*/
-    public void fadeIn(final View notificationView, final float startY, final float endY, final WindowManager.LayoutParams params, final WindowManager mWindowManager){
+    public void fadeIn(final View notificationView, final float startY, final float endY, final WindowManager.LayoutParams params, final WindowManager mWindowManager) {
         final long startTime = System.currentTimeMillis();
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable(){
-            public void run(){
+        handler.postDelayed(new Runnable() {
+            public void run() {
                 fadeInHandler(notificationView, startY, endY, params, mWindowManager, startTime);
             }
         }, 16);
     }
 
     /*This will handle the entire animation*/
-    public void fadeInHandler(final View notificationView, final float startY, final float endY, final WindowManager.LayoutParams params, final WindowManager mWindowManager, final long startTime){
+    public void fadeInHandler(final View notificationView, final float startY, final float endY, final WindowManager.LayoutParams params, final WindowManager mWindowManager, final long startTime) {
         long timeNow = System.currentTimeMillis();
 
-        float currentY = startY + ((timeNow - startTime)/300.0f) * (endY - startY);
+        float currentY = startY + ((timeNow - startTime) / 300.0f) * (endY - startY);
 
         //If the animation has gone too far
 
@@ -233,10 +237,10 @@ public class MainActivity extends AppCompatActivity {
         params.alpha = 0.0f;
 
         mWindowManager.updateViewLayout(notificationView, params);
-        if (timeNow-startTime < 300){
+        if (timeNow - startTime < 300) {
             Handler handler = new Handler();
-            handler.postDelayed(new Runnable(){
-                public void run(){
+            handler.postDelayed(new Runnable() {
+                public void run() {
                     fadeInHandler(notificationView, startY, endY, params, mWindowManager, startTime);
                 }
             }, 16);
@@ -253,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
     boolean undoIsVisible = false;
 
     //Called when the user clicks the remove task FAB button
-    public void removeCompletedTasks(View view){
+    public void removeCompletedTasks(View view) {
 
         final int add_margin = ((RelativeLayout.LayoutParams) findViewById(R.id.fab_add).getLayoutParams()).bottomMargin;
         final int remove_margin = ((RelativeLayout.LayoutParams) findViewById(R.id.fab_remove).getLayoutParams()).bottomMargin;
@@ -265,10 +269,12 @@ public class MainActivity extends AppCompatActivity {
         fade_out.setAnimationListener(new Animation.AnimationListener() {
 
             @Override
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+            }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationRepeat(Animation animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -277,10 +283,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        for(TaskItem ti : removed){
+        for (TaskItem ti : removed) {
             View v = findViewByIndex(tasks.indexOf(ti), (ListView) findViewById(R.id.listview));
 
-            if(v != null){
+            if (v != null) {
                 v.startAnimation(fade_out);
             } else {
                 tasks.remove(ti);
@@ -288,7 +294,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        fab_remove.hide();
+        fab_remove.setVisibility(View.INVISIBLE);
 
         //When the toast appears, we need to move the fabs up
         final Animation fab_in = AnimationUtils.loadAnimation(this, R.anim.fab_in);
@@ -296,10 +302,12 @@ public class MainActivity extends AppCompatActivity {
         fab_in.setAnimationListener(new Animation.AnimationListener() {
 
             @Override
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+            }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationRepeat(Animation animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -317,10 +325,12 @@ public class MainActivity extends AppCompatActivity {
         fab_out.setAnimationListener(new Animation.AnimationListener() {
 
             @Override
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+            }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationRepeat(Animation animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -334,54 +344,37 @@ public class MainActivity extends AppCompatActivity {
 
         final Context ct = this;
 
-        //Create a snackbar, when the undo button is pressed: re-add all removed tasks
-        UndoBarController.UndoBar ub = new UndoBarController.UndoBar(this).message("Removed completed tasks").listener(new UndoBarController.AdvancedUndoListener() {
+        Snackbar undo = Snackbar.make(view, "Removed completed tasks", Snackbar.LENGTH_LONG)
+                .setAction("Undo", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View undo) {
+                        tasks.insert(removed);
+                        adapter.notifyDataSetChanged();
 
-            public void onUndo(Parcelable p) {
+                        //Fade in the animation fancily when added
+                        //DOES NOT WORK CORRECTLY
+                        final Animation fade_in = AnimationUtils.loadAnimation(ct, R.anim.fade_in);
 
-                tasks.insert(removed);
-                adapter.notifyDataSetChanged();
+                        for (TaskItem li : removed) {
+                            View v = findViewByIndex(tasks.indexOf(li), (ListView) findViewById(R.id.listview));
 
-                //Fade in the animation fancily when added
-                //DOES NOT WORK CORRECTLY
-                final Animation fade_in = AnimationUtils.loadAnimation(ct, R.anim.fade_in);
+                            if (v != null) {
+                                v.startAnimation(fade_in);
+                            }
+                        }
 
-                for(TaskItem li : removed) {
-                    View v = findViewByIndex(tasks.indexOf(li), (ListView) findViewById(R.id.listview));
-
-                    if (v != null) {
-                        v.startAnimation(fade_in);
+                        //We assume since the tasks will be restored as checked, we can reintroduce the remove FAB
+                        fab_remove.setVisibility(View.VISIBLE);
+                        findViewById(R.id.fab_add).startAnimation(fab_out);
+                        findViewById(R.id.fab_remove).startAnimation(fab_out);
                     }
-                }
+                });
 
-                //We assume since the tasks will be restored as checked, we can reintroduce the remove FAB
-                fab_remove.show();
-                findViewById(R.id.fab_add).startAnimation(fab_out);
-                findViewById(R.id.fab_remove).startAnimation(fab_out);
-                undoIsVisible = false;
-            }
+        undo.show();
 
-            public void onHide(Parcelable p) {
-                findViewById(R.id.fab_add).startAnimation(fab_out);
-                findViewById(R.id.fab_remove).startAnimation(fab_out);
-                undoIsVisible = false;
-            }
-
-            public void onClear(Parcelable[] p) {
-            }
-
-        }).noicon(true);
-
-        if(!undoIsVisible) {
-
-            ub.show();
-
-            //The task is removed, so the fabs must go up
-            findViewById(R.id.fab_add).startAnimation(fab_in);
-            findViewById(R.id.fab_remove).startAnimation(fab_in);
-            undoIsVisible = true;
-        }
-
+        //The task is removed, so the fabs must go up
+        findViewById(R.id.fab_add).startAnimation(fab_in);
+        findViewById(R.id.fab_remove).startAnimation(fab_in);
     }
 
     // Called when the user clicks the add task FAB button
@@ -396,36 +389,36 @@ public class MainActivity extends AppCompatActivity {
 
         //Creates a dialog for adding a new task
         MaterialDialog dialog = new MaterialDialog.Builder(this)
-            .title("Add Task")
-            .customView(R.layout.addtask)
-            .negativeText("Cancel")
-            .positiveText("Add")
-            .negativeColor(Color.parseColor("#2196F3"))
-            .positiveColor(Color.parseColor("#2196F3"))
-            .callback(new MaterialDialog.SimpleCallback() {
-                @Override
-                public void onPositive(MaterialDialog dialog) {
+                .title("Add Task")
+                .customView(R.layout.addtask)
+                .negativeText("Cancel")
+                .positiveText("Add")
+                .negativeColor(Color.parseColor("#2196F3"))
+                .positiveColor(Color.parseColor("#2196F3"))
+                .callback(new MaterialDialog.SimpleCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
 
-                    //Creating a new TaskItem for the task
-                    final TaskItem li = new TaskItem();
-                    li.setText(taskTitle);
-                    li.setColor(checkedColor);
-                    li.setChecked(false);
+                        //Creating a new TaskItem for the task
+                        final TaskItem li = new TaskItem();
+                        li.setText(taskTitle);
+                        li.setColor(checkedColor);
+                        li.setChecked(false);
 
-                    tasks.insert(li);
-                    adapter.notifyDataSetChanged();
+                        tasks.insert(li);
+                        adapter.notifyDataSetChanged();
 
-                    View v = findViewByIndex(tasks.indexOf(li), (ListView) findViewById(R.id.listview));
+                        View v = findViewByIndex(tasks.indexOf(li), (ListView) findViewById(R.id.listview));
 
-                    //Fade in the animation fancily when added
-                    final Animation fade_in = AnimationUtils.loadAnimation(ct, R.anim.fade_in);
+                        //Fade in the animation fancily when added
+                        final Animation fade_in = AnimationUtils.loadAnimation(ct, R.anim.fade_in);
 
-                    if(v != null) {
-                        v.startAnimation(fade_in);
+                        if (v != null) {
+                            v.startAnimation(fade_in);
+                        }
                     }
-                }
-            })
-            .build();
+                })
+                .build();
 
         positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
         taskTitleText = (EditText) dialog.getCustomView().findViewById(R.id.task_title);
@@ -457,11 +450,11 @@ public class MainActivity extends AppCompatActivity {
                 if (checkedRadioButton.isChecked()) {
 
                     //We save the color value of the radio button
-                    if(checkedId == R.id.task_priority_red){
+                    if (checkedId == R.id.task_priority_red) {
                         checkedColor = TaskItem.Color.RED;
-                    } else if(checkedId == R.id.task_priority_blue){
+                    } else if (checkedId == R.id.task_priority_blue) {
                         checkedColor = TaskItem.Color.BLUE;
-                    } else if(checkedId == R.id.task_priority_green){
+                    } else if (checkedId == R.id.task_priority_green) {
                         checkedColor = TaskItem.Color.GREEN;
                     } else {
                         checkedColor = null;
@@ -494,7 +487,7 @@ public class MainActivity extends AppCompatActivity {
         final TaskItem.Color originalColor = ti_temp.getColor();
 
         //Check for if we get a null object
-        if(index < 0){
+        if (index < 0) {
             System.out.println("Weird index?");
             return;
         }
@@ -516,7 +509,7 @@ public class MainActivity extends AppCompatActivity {
                         ti_temp.setColor(checkedColor);
 
                         //If we change the priority, we need to sort it again
-                        if(!originalColor.equals(checkedColor)){
+                        if (!originalColor.equals(checkedColor)) {
                             tasks.sort(ti_temp);
                         }
 
@@ -552,11 +545,11 @@ public class MainActivity extends AppCompatActivity {
         taskPriority = (RadioGroup) dialog.getCustomView().findViewById(R.id.task_priority);
 
         //Set the color
-        if(checkedColor == TaskItem.Color.RED) {
+        if (checkedColor == TaskItem.Color.RED) {
             taskPriority.check(R.id.task_priority_red);
-        } else if(checkedColor == TaskItem.Color.BLUE) {
+        } else if (checkedColor == TaskItem.Color.BLUE) {
             taskPriority.check(R.id.task_priority_blue);
-        } else if(checkedColor == TaskItem.Color.GREEN) {
+        } else if (checkedColor == TaskItem.Color.GREEN) {
             taskPriority.check(R.id.task_priority_green);
         }
 
@@ -568,11 +561,11 @@ public class MainActivity extends AppCompatActivity {
                 if (checkedRadioButton.isChecked()) {
 
                     //We save the color value of the radio button
-                    if(checkedId == R.id.task_priority_red){
+                    if (checkedId == R.id.task_priority_red) {
                         checkedColor = TaskItem.Color.RED;
-                    } else if(checkedId == R.id.task_priority_blue){
+                    } else if (checkedId == R.id.task_priority_blue) {
                         checkedColor = TaskItem.Color.BLUE;
-                    } else if(checkedId == R.id.task_priority_green){
+                    } else if (checkedId == R.id.task_priority_green) {
                         checkedColor = TaskItem.Color.GREEN;
                     } else {
                         checkedColor = null;
@@ -598,11 +591,12 @@ public class MainActivity extends AppCompatActivity {
 
     //Here is where we save permanent data
     @Override
-    protected void onStop(){
+    protected void onStop() {
         super.onStop();
 
         //Serialize our TaskArrayList to Json
-        Type taskArrayListType = new TypeToken<TaskArrayList>(){}.getType();
+        Type taskArrayListType = new TypeToken<TaskArrayList>() {
+        }.getType();
         String serializedData = gson.toJson(tasks, taskArrayListType);
 
         System.out.println("Saving: " + serializedData);
@@ -632,7 +626,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Clones a task view, it's inflated and filled with the same values
-    public View cloneView(View view){
+    public View cloneView(View view) {
         View result = LayoutInflater.from(this).inflate(R.layout.listitem, null);
 
         //Sets the text to be the same
@@ -651,7 +645,7 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    public static float convertPixelsToDp(float px, Context context){
+    public static float convertPixelsToDp(float px, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
         float dp = px / (metrics.densityDpi / 160f);
